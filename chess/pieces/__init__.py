@@ -2,21 +2,14 @@ class ImpossibleMove(Exception):
     pass
 
 
-class CantInstantiatePiece(Exception):
-    pass
-
-
 class InvalidChessColor(Exception):
     pass
 
 
 class Piece(object):
     def __init__(self, color):
-
-        if self.__class__.__name__ == 'Piece':
-            raise CantInstantiatePiece("You can't instantiate this class")
-
         color = color.lower()
+
         if color not in ['white', 'black']:
             raise InvalidChessColor('That color should be "black" or "white".')
 

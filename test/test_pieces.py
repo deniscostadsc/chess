@@ -1,15 +1,12 @@
 import unittest
 
 from chess.pieces import (
-    Piece, Bishop, King, Knight, Pawn, Queen, Rook,
-    ImpossibleMove, CantInstantiatePiece, InvalidChessColor
+    Bishop, King, Knight, Pawn, Queen, Rook,
+    ImpossibleMove, InvalidChessColor
 )
 
 
 class TestInstantiationPieces(unittest.TestCase):
-    def test_cant_instantiate_piece(self):
-        self.assertRaises(CantInstantiatePiece, Piece, 'white')
-
     def test_raises_exception_on_unknown_color(self):
         self.assertRaises(InvalidChessColor, Bishop, 'blue')
 
