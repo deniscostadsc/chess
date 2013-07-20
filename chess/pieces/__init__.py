@@ -14,7 +14,7 @@ class Piece(object):
     def __init__(self, color):
 
         if self.__class__.__name__ == 'Piece':
-            raise CantInstantiatePiece("You can't instantiate_this_class")
+            raise CantInstantiatePiece("You can't instantiate this class")
 
         color = color.lower()
         if color not in ['white', 'black']:
@@ -23,6 +23,9 @@ class Piece(object):
         self.__color = color
         self.y = '12345678'
         self.x = 'abcdefgh'
+
+    def __str__(self):
+        return self.__class__.__name__
 
     def is_black(self):
         return self.__color == 'black'
