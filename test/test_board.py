@@ -1,4 +1,7 @@
-import unittest
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 from chess.board import Board
 from chess.pieces import King, Rook, Queen, ImpossibleMove
