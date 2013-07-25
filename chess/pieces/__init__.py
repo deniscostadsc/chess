@@ -14,11 +14,19 @@ class Piece(object):
             raise InvalidChessColor('That color should be "black" or "white".')
 
         self.__color = color
-        self.y = '12345678'
-        self.x = 'abcdefgh'
+        self.__y = '12345678'
+        self.__x = 'abcdefgh'
 
     def __str__(self):
         return self.__class__.__name__
+
+    @property
+    def x(self):
+        return self.__x
+
+    @property
+    def y(self):
+        return self.__y
 
     def is_black(self):
         return self.__color == 'black'
