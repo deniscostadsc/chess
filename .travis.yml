@@ -6,6 +6,8 @@ python:
     - "pypy"
 install:
     - pip install flake8 --use-mirrors
+    - pip install coverage --use-mirrors
+    - pip install nose --use-mirrors
     - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install unittest2 --use-mirrors; fi"
 script:
     - test/run_tests.sh
