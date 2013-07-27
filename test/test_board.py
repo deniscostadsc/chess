@@ -4,7 +4,7 @@ except ImportError:
     import unittest
 
 from chess.board import Board
-from chess.pieces import King, Rook, Queen, ImpossibleMove
+from chess.pieces import King, Rook, Queen, ImpossibleMove, Pawn, Knight
 
 
 class TestBoard(unittest.TestCase):
@@ -31,6 +31,35 @@ class TestBoard(unittest.TestCase):
         board = Board()
         self.assertRaises(ImpossibleMove, board.move, 'g1', 'g3')
         self.assertRaises(ImpossibleMove, board.move, 'b2', 'b5')
+
+    def test_knight_capture(self):
+        board = Board(initial_pieces={'e5': Pawn('white'), 'f3': Knight('black')})
+        pieces = [piece for piece in board.squares.values() if piece is not None]
+        self.assertEqual(2, len(pieces))
+
+        knight = board.squares['f3']
+        board.move('f3', 'e5')
+        self.assertIs(knight, board.squares['e5'])
+
+        pieces = [piece for piece in board.squares.values() if piece is not None]
+        self.assertEqual(1, len(pieces))
+
+    def test_fail_knight_capture_ally(self):
+        board = Board(initial_pieces={'e5': Pawn('white'), 'f3': Knight('white')})
+        self.assertRaises(ImpossibleMove, board.move, 'f3', 'e5')
+
+    def test_bishop_capture_rook(self):
+        board = Board()
+        pieces = [piece for piece in board.squares.values() if piece is not None]
+        self.assertEqual(32, len(pieces))
+
+        board.move('g2', 'g3')  # white pawn moves
+        board.move('b7', 'b6')  # black pawn moves
+        board.move('f1', 'g2')  # white bishop moves
+        board.move('g8', 'f6')  # black knight moves
+        board.move('g2', 'a8')  # white bishop capture white rook
+        pieces = [piece for piece in board.squares.values() if piece is not None]
+        self.assertEqual(31, len(pieces))
 
     def test_pawn_moves_two_square(self):
         board = Board()

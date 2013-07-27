@@ -1,4 +1,4 @@
-from chess.pieces import Rook, Knight, Bishop, Queen, King, Pawn
+from chess.pieces import Rook, Knight, Bishop, Queen, King, Pawn, ImpossibleMove
 
 
 class Board(object):
@@ -108,6 +108,7 @@ class Board(object):
 
     def move(self, _from, to):
         piece = self.squares[_from]
+        destiny = self.squares[to]
         if isinstance(piece, King):
             if self.is_castling(_from, to):
                 self.move_castling(_from, to)
@@ -117,6 +118,9 @@ class Board(object):
             if self.is_valid_pawn_move(_from, to):
                 self.squares[to], self.squares[_from] = self.squares[_from], None
                 return
+
+        if destiny is not None and destiny.color == piece.color:
+            raise ImpossibleMove("You can't capture your ally!")
 
         self.squares[_from].move(_from, to)
         self.squares[to] = self.squares[_from]
