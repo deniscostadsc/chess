@@ -22,6 +22,7 @@ class TestBoard(unittest.TestCase):
         self.assertIs(knight, board.squares['f3'])
         self.assertIsNone(board.squares['g1'])
 
+        board = Board()
         pawn = board.squares['e2']
         board.move('e2', 'e3')
         self.assertIs(pawn, board.squares['e3'])
@@ -33,7 +34,7 @@ class TestBoard(unittest.TestCase):
         self.assertRaises(ImpossibleMove, board.move, 'b2', 'b5')
 
     def test_knight_capture(self):
-        board = Board(initial_pieces={'e5': Pawn('white'), 'f3': Knight('black')})
+        board = Board(initial_pieces={'e5': Pawn('black'), 'f3': Knight('white')})
         pieces = [piece for piece in board.squares.values() if piece is not None]
         self.assertEqual(2, len(pieces))
 
@@ -117,15 +118,19 @@ class TestBoard(unittest.TestCase):
         self.assertIsNone(board.squares['a8'])
 
     def test_fail_castling_when_rook_already_moved(self):
-        board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
+        board = Board(initial_pieces={'a7': Pawn('black'), 'e1': King('white'), 'h1': Rook('white')})
         board.move('h1', 'h8')
+        board.move('a7', 'a6')  # pawn moves
         board.move('h8', 'h1')
+        board.move('a6', 'a5')  # pawn moves
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
     def test_fail_castling_when_king_already_moved(self):
-        board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
+        board = Board(initial_pieces={'a7': Pawn('black'), 'e1': King('white'), 'h1': Rook('white')})
         board.move('e1', 'f1')
+        board.move('a7', 'a6')  # pawn moves
         board.move('f1', 'e1')
+        board.move('a6', 'a5')  # pawn moves
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
     def test_fail_castling_when_no_rook_involved(self):
@@ -151,3 +156,22 @@ class TestBoard(unittest.TestCase):
     def test_fail_castling_when_pieces_start_in_wrong_place(self):
         board = Board(initial_pieces={'e2': King('white'), 'h2': Rook('black')})
         self.assertRaises(ImpossibleMove, board.move, 'e2', 'g2')
+
+    def test_alternating_between_players(self):
+        board = Board()
+        self.assertEqual('white', board.turn)
+        board.move('g2', 'g3')  # white pawn moves
+        self.assertEqual('black', board.turn)
+        board.move('b7', 'b6')  # black pawn moves
+        self.assertEqual('white', board.turn)
+        board.move('f1', 'g2')  # white bishop moves
+        self.assertEqual('black', board.turn)
+        board.move('g8', 'f6')  # black knight moves
+        self.assertEqual('white', board.turn)
+        board.move('g2', 'a8')  # white bishop capture white rook
+        self.assertEqual('black', board.turn)
+
+    def test_white_pieces_start_game(self):
+        board = Board()
+        self.assertEqual('white', board.turn)
+        self.assertRaises(ImpossibleMove, board.move, 'b7', 'b6')  # black pawn try to move

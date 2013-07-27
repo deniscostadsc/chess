@@ -5,6 +5,7 @@ class Board(object):
     def __init__(self, initial_pieces=None):
         self.__y = '12345678'
         self.__x = 'abcdefgh'
+        self.__turn = 'white'
         self.__squares = {}
         self.__initial_pieces = initial_pieces or {
             'a1': Rook('white'),
@@ -60,6 +61,13 @@ class Board(object):
     def squares(self):
         return self.__squares
 
+    @property
+    def turn(self):
+        return self.__turn
+
+    def switch_turn(self):
+        self.__turn = 'white' if self.turn == 'black' else 'black'
+
     def is_castling(self, _from, to):
         y_from = _from[1]
         y_to = to[1]
@@ -108,6 +116,10 @@ class Board(object):
 
     def move(self, _from, to):
         piece = self.squares[_from]
+
+        if piece.color != self.turn:
+            raise ImpossibleMove("Not your turn!")
+
         destiny = self.squares[to]
         if isinstance(piece, King):
             if self.is_castling(_from, to):
@@ -125,3 +137,4 @@ class Board(object):
         self.squares[_from].move(_from, to)
         self.squares[to] = self.squares[_from]
         self.squares[_from] = None
+        self.switch_turn()
