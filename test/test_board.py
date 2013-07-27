@@ -53,11 +53,14 @@ class TestBoard(unittest.TestCase):
         pieces = [piece for piece in board.squares.values() if piece is not None]
         self.assertEqual(32, len(pieces))
 
+        bishop = board.squares['f1']
         board.move('g2', 'g3')  # white pawn moves
         board.move('b7', 'b6')  # black pawn moves
         board.move('f1', 'g2')  # white bishop moves
         board.move('g8', 'f6')  # black knight moves
         board.move('g2', 'a8')  # white bishop capture white rook
+        self.assertIs(bishop, board.squares['a8'])
+
         pieces = [piece for piece in board.squares.values() if piece is not None]
         self.assertEqual(31, len(pieces))
 
