@@ -70,71 +70,71 @@ class TestColorPieces(unittest.TestCase):
 
 
 class TestBishopMoves(unittest.TestCase):
-    def test_bishop_can_move(self):
+    def test_bishop_move(self):
         bishop = Bishop('white')
         self.assertEqual('g2', bishop.move('f1', 'g2'))
         self.assertEqual('a6', bishop.move('f1', 'a6'))
 
-    def test_bishop_cant_move(self):
+    def test_fail_bishop_move(self):
         bishop = Bishop('white')
         self.assertRaises(ImpossibleMove, bishop.move, 'f1', 'f2')
         self.assertRaises(ImpossibleMove, bishop.move, 'a1', 'a3')
 
 
 class TestRookMoves(unittest.TestCase):
-    def test_rook_can_move(self):
+    def test_rook_move(self):
         rook = Rook('white')
         self.assertEqual('d8', rook.move('d5', 'd8'))
         self.assertEqual('h2', rook.move('e2', 'h2'))
 
-    def test_rook_cant_move(self):
+    def test_fail_rook_move(self):
         rook = Rook('white')
         self.assertRaises(ImpossibleMove, rook.move, 'e5', 'd8')
         self.assertRaises(ImpossibleMove, rook.move, 'a1', 'h8')
 
 
 class TestKingMoves(unittest.TestCase):
-    def test_king_can_move(self):
+    def test_king_move(self):
         king = King('white')
         self.assertEqual('e5', king.move('f5', 'e5'))
         self.assertEqual('f5', king.move('e5', 'f5'))
 
-    def test_king_cant_move(self):
+    def test_fail_king_move(self):
         king = King('white')
         self.assertRaises(ImpossibleMove, king.move, 'a1', 'h8')
         self.assertRaises(ImpossibleMove, king.move, 'h1', 'a8')
 
 
 class TestQueenMoves(unittest.TestCase):
-    def test_queen_can_move_as_rook(self):
+    def test_queen_move_as_rook(self):
         queen = Queen('white')
         self.assertEqual('d8', queen.move('d5', 'd8'))
         self.assertEqual('h2', queen.move('e2', 'h2'))
 
-    def test_queen_can_move_as_bishop(self):
+    def test_queen_move_as_bishop(self):
         queen = Queen('white')
         self.assertEqual('g2', queen.move('f1', 'g2'))
         self.assertEqual('a6', queen.move('f1', 'a6'))
 
-    def test_queen_cant_move(self):
+    def test_fail_queen_move(self):
         queen = Queen('white')
         self.assertRaises(ImpossibleMove, queen.move, 'a1', 'h7')
         self.assertRaises(ImpossibleMove, queen.move, 'd4', 'f5')
 
 
 class TestPawnMoves(unittest.TestCase):
-    def test_pawn_can_move(self):
+    def test_pawn_move(self):
         pawn = Pawn('white')
         self.assertEqual('b5', pawn.move('b4', 'b5'))
         self.assertEqual('e8', pawn.move('e7', 'e8'))
 
-    def test_pawn_cant_move(self):
+    def test_fail_pawn_move(self):
         pawn = Pawn('white')
         self.assertRaises(ImpossibleMove, pawn.move, 'e2', 'e8')
 
 
 class TestKnightMoves(unittest.TestCase):
-    def test_knight_can_move(self):
+    def test_knight_move(self):
         knight = Knight('white')
         self.assertEqual('b5', knight.move('d4', 'b5'))
         self.assertEqual('c6', knight.move('d4', 'c6'))
@@ -145,7 +145,7 @@ class TestKnightMoves(unittest.TestCase):
         self.assertEqual('e2', knight.move('d4', 'e2'))
         self.assertEqual('f3', knight.move('d4', 'f3'))
 
-    def test_knight_cant_move(self):
+    def test_fail_knight_move(self):
         knight = Knight('white')
         self.assertRaises(ImpossibleMove, knight.move, 'd4', 'd3')
         self.assertRaises(ImpossibleMove, knight.move, 'd4', 'b2')
@@ -154,26 +154,26 @@ class TestKnightMoves(unittest.TestCase):
 
 
 class TestStrPieces(unittest.TestCase):
-    def test_str_pawn(self):
+    def test_pawn_name(self):
         pawn = Pawn('white')
         self.assertEqual('Pawn', pawn.name)
 
-    def test_str_rook(self):
+    def test_rook_name(self):
         rook = Rook('white')
         self.assertEqual('Rook', rook.name)
 
-    def test_str_knight(self):
+    def test_knight_name(self):
         knight = Knight('white')
         self.assertEqual('Knight', knight.name)
 
-    def test_str_bishop(self):
+    def test_bishop_name(self):
         bishop = Bishop('white')
         self.assertEqual('Bishop', bishop.name)
 
-    def test_str_queen(self):
+    def test_queen_name(self):
         queen = Queen('white')
         self.assertEqual('Queen', queen.name)
 
-    def test_str_king(self):
+    def test_king_name(self):
         king = King('white')
         self.assertEqual('King', king.name)
