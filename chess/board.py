@@ -65,7 +65,7 @@ class Board(object):
     def turn(self):
         return self.__turn
 
-    def switch_turn(self):
+    def __switch_turn(self):
         self.__turn = 'white' if self.turn == 'black' else 'black'
 
     def is_castling(self, _from, to):
@@ -137,4 +137,4 @@ class Board(object):
         self.squares[_from].move(_from, to)
         self.squares[to] = self.squares[_from]
         self.squares[_from] = None
-        self.switch_turn()
+        self.__switch_turn()
