@@ -44,7 +44,7 @@ class TestBoard(unittest.TestCase):
         board.move('a2', 'a3')
         self.assertRaises(ImpossibleMove, board.move, 'a3', 'a5')
 
-    def test_castling(self):
+    def test_castling_right_white(self):
         board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
         king = board.squares['e1']
         rook = board.squares['h1']
@@ -53,6 +53,36 @@ class TestBoard(unittest.TestCase):
         self.assertIs(rook, board.squares['f1'])
         self.assertIsNone(board.squares['e1'])
         self.assertIsNone(board.squares['h1'])
+
+    def test_castling_left_white(self):
+        board = Board(initial_pieces={'e1': King('white'), 'a1': Rook('white')})
+        king = board.squares['e1']
+        rook = board.squares['a1']
+        board.move('e1', 'c1')
+        self.assertIs(king, board.squares['c1'])
+        self.assertIs(rook, board.squares['d1'])
+        self.assertIsNone(board.squares['e1'])
+        self.assertIsNone(board.squares['a1'])
+
+    def test_castling_right_black(self):
+        board = Board(initial_pieces={'e8': King('white'), 'h8': Rook('white')})
+        king = board.squares['e8']
+        rook = board.squares['h8']
+        board.move('e8', 'g8')
+        self.assertIs(king, board.squares['g8'])
+        self.assertIs(rook, board.squares['f8'])
+        self.assertIsNone(board.squares['e8'])
+        self.assertIsNone(board.squares['h8'])
+
+    def test_castling_left_black(self):
+        board = Board(initial_pieces={'e8': King('white'), 'a8': Rook('white')})
+        king = board.squares['e8']
+        rook = board.squares['a8']
+        board.move('e8', 'c8')
+        self.assertIs(king, board.squares['c8'])
+        self.assertIs(rook, board.squares['d8'])
+        self.assertIsNone(board.squares['e8'])
+        self.assertIsNone(board.squares['a8'])
 
     def test_fail_castling_when_rook_already_moved(self):
         board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})

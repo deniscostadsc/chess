@@ -61,31 +61,31 @@ class Board(object):
         return self.__squares
 
     def is_castling(self, _from, to):
-        y_from = _from[1]
+        # y_from = _from[1]
         y_to = to[1]
 
         x_rook = 'a'
-        between = ['b', 'c', 'd']
+        # between = ['b', 'c', 'd']
         if self.__x.index(_from[0]) - self.__x.index(to[0]) == -2:
             x_rook = 'h'
-            between = ['f', 'g']
+            # between = ['f', 'g']
 
         king = self.squares[_from]
         rook = self.squares[x_rook + y_to]
 
         if not isinstance(rook, Rook):
             return False
-        if y_from != y_to:
-            return False
-        if self.__x.index(_from[0]) - self.__x.index(to[0]) not in [-2, 2]:
-            return False
+        # if y_from != y_to:
+        #     return False
+        # if self.__x.index(_from[0]) - self.__x.index(to[0]) not in [-2, 2]:
+        #     return False
         if king.moved or rook.moved:
             return False
         if king.color != rook.color:
             return False
-        for x in between:
-            if self.squares[x + y_to] is not None:
-                return False
+        # for x in between:
+        #     if self.squares[x + y_to] is not None:
+        #         return False
 
         return True
 
