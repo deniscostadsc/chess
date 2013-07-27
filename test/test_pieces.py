@@ -22,63 +22,51 @@ class TestInstantiationPieces(unittest.TestCase):
 class TestColorPieces(unittest.TestCase):
     def test_bishop_is_black(self):
         bishop = Bishop('black')
-        self.assertTrue(bishop.is_black())
-        self.assertFalse(bishop.is_white())
+        self.assertEqual('black', bishop.color)
 
     def test_bishop_is_white(self):
         bishop = Bishop('white')
-        self.assertTrue(bishop.is_white())
-        self.assertFalse(bishop.is_black())
+        self.assertEqual('white', bishop.color)
 
     def test_rook_is_black(self):
         rook = Rook('black')
-        self.assertTrue(rook.is_black())
-        self.assertFalse(rook.is_white())
+        self.assertEqual('black', rook.color)
 
     def test_rook_is_white(self):
         rook = Rook('white')
-        self.assertTrue(rook.is_white())
-        self.assertFalse(rook.is_black())
+        self.assertEqual('white', rook.color)
 
     def test_king_is_black(self):
         king = King('black')
-        self.assertTrue(king.is_black())
-        self.assertFalse(king.is_white())
+        self.assertEqual('black', king.color)
 
     def test_king_is_white(self):
         king = King('white')
-        self.assertTrue(king.is_white())
-        self.assertFalse(king.is_black())
+        self.assertEqual('white', king.color)
 
     def test_queen_is_black(self):
         queen = Queen('black')
-        self.assertTrue(queen.is_black())
-        self.assertFalse(queen.is_white())
+        self.assertEqual('black', queen.color)
 
     def test_queen_is_white(self):
         queen = Queen('white')
-        self.assertTrue(queen.is_white())
-        self.assertFalse(queen.is_black())
+        self.assertEqual('white', queen.color)
 
     def test_pawn_is_black(self):
         pawn = Pawn('black')
-        self.assertTrue(pawn.is_black())
-        self.assertFalse(pawn.is_white())
+        self.assertEqual('black', pawn.color)
 
     def test_pawn_is_white(self):
         pawn = Pawn('white')
-        self.assertTrue(pawn.is_white())
-        self.assertFalse(pawn.is_black())
+        self.assertEqual('white', pawn.color)
 
     def test_knight_is_black(self):
         knight = Knight('black')
-        self.assertTrue(knight.is_black())
-        self.assertFalse(knight.is_white())
+        self.assertEqual('black', knight.color)
 
     def test_knight_is_white(self):
         knight = Knight('white')
-        self.assertTrue(knight.is_white())
-        self.assertFalse(knight.is_black())
+        self.assertEqual('white', knight.color)
 
 
 class TestBishopMoves(unittest.TestCase):

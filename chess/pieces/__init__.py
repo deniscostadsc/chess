@@ -22,6 +22,10 @@ class Piece(object):
         return self.__class__.__name__
 
     @property
+    def color(self):
+        return self.__color
+
+    @property
     def x(self):
         return self.__x
 
@@ -36,12 +40,6 @@ class Piece(object):
     @moved.setter
     def moved(self, value):
         self.__moved = value
-
-    def is_black(self):
-        return self.__color == 'black'
-
-    def is_white(self):
-        return self.__color == 'white'
 
 
 class Bishop(Piece):

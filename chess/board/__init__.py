@@ -81,7 +81,7 @@ class Board(object):
             return False
         if king.moved or rook.moved:
             return False
-        if (king.is_black() and rook.is_white()) or (king.is_white() and rook.is_black()):
+        if king.color != rook.color:
             return False
         for x in between:
             if self.squares[x + y_to] is not None:
