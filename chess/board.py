@@ -134,6 +134,5 @@ class Board(object):
                 return
 
         self.squares[_from].move(_from, to)
-        self.squares[to] = self.squares[_from]
-        self.squares[_from] = None
+        self.squares[to], self.squares[_from] = self.squares[_from], None
         self.__switch_turn()
