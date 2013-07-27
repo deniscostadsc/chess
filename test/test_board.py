@@ -101,17 +101,21 @@ class TestBoard(unittest.TestCase):
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
     def test_fail_castling_when_is_not_same_line(self):
-        board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
+        board = Board(initial_pieces={'e1': King('white'), 'h2': Rook('white')})
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g2')
 
     def test_fail_castling_when_destiny_is_too_far(self):
-        board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
+        board = Board(initial_pieces={'e1': King('white'), 'a1': Rook('white')})
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'b1')
 
     def test_fail_castling_when_some_piece_is_between_king_rook(self):
         board = Board(initial_pieces={'e1': King('white'), 'f1': Queen('white'), 'h1': Rook('white')})
-        self.assertRaises(ImpossibleMove, board.move, 'e1', 'b1')
+        self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
     def test_fail_castling_when_pieces_are_black_and_white(self):
         board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('black')})
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
+
+    def test_fail_castling_when_pieces_start_in_wrong_place(self):
+        board = Board(initial_pieces={'e2': King('white'), 'h2': Rook('black')})
+        self.assertRaises(ImpossibleMove, board.move, 'e2', 'g2')
