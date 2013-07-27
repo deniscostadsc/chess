@@ -18,7 +18,8 @@ class Piece(object):
         self.__y = '12345678'
         self.__x = 'abcdefgh'
 
-    def __str__(self):
+    @property
+    def name(self):
         return self.__class__.__name__
 
     @property

@@ -156,24 +156,24 @@ class TestKnightMoves(unittest.TestCase):
 class TestStrPieces(unittest.TestCase):
     def test_str_pawn(self):
         pawn = Pawn('white')
-        self.assertEqual('Pawn', pawn.__str__())
+        self.assertEqual('Pawn', pawn.name)
 
     def test_str_rook(self):
         rook = Rook('white')
-        self.assertEqual('Rook', rook.__str__())
+        self.assertEqual('Rook', rook.name)
 
     def test_str_knight(self):
         knight = Knight('white')
-        self.assertEqual('Knight', knight.__str__())
+        self.assertEqual('Knight', knight.name)
 
     def test_str_bishop(self):
         bishop = Bishop('white')
-        self.assertEqual('Bishop', bishop.__str__())
+        self.assertEqual('Bishop', bishop.name)
 
     def test_str_queen(self):
         queen = Queen('white')
-        self.assertEqual('Queen', queen.__str__())
+        self.assertEqual('Queen', queen.name)
 
     def test_str_king(self):
         king = King('white')
-        self.assertEqual('King', king.__str__())
+        self.assertEqual('King', king.name)
