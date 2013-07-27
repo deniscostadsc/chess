@@ -77,10 +77,10 @@ class Queen(Piece):
     def move(self, _from, to):
         self.moved = True
         # move as a Rook {{
-        is_horizontal_and_valid = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
-        is_vertical_and_valid = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
+        horizontal = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
+        vertical = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
 
-        if is_horizontal_and_valid or is_vertical_and_valid:
+        if horizontal or vertical:
             return to
         # }}
 
