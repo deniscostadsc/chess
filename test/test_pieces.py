@@ -132,6 +132,10 @@ class TestPawnMoves(unittest.TestCase):
         pawn = Pawn('white')
         self.assertRaises(ImpossibleMove, pawn.move, 'e2', 'e8')
 
+    def test_fail_pawn_move_back(self):
+        pawn = Pawn('white')
+        self.assertRaises(ImpossibleMove, pawn.move, 'b4', 'b3')
+
 
 class TestKnightMoves(unittest.TestCase):
     def test_knight_move(self):

@@ -95,7 +95,9 @@ class Queen(Piece):
 class Pawn(Piece):
     def move(self, _from, to):
         self.moved = True
-        if self.x.index(_from[0]) == self.x.index(to[0]) and abs(self.y.index(to[1]) - self.y.index(_from[1])) == 1:
+        if self.color == 'white' and self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(to[1]) - self.y.index(_from[1]) == 1:
+            return to
+        if self.color == 'black' and self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(to[1]) - self.y.index(_from[1]) == -1:
             return to
         raise ImpossibleMove("Pawn can't move to %s" % to)
 
