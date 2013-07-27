@@ -39,7 +39,7 @@ class TestBoard(unittest.TestCase):
         self.assertIs(pawn, board.squares['a4'])
         self.assertIsNone(board.squares['a2'])
 
-    def test_fail_pawn_moves_two_square(self):
+    def test_fail_pawn_moves_two_squares(self):
         board = Board()
         board.move('a2', 'a3')
         self.assertRaises(ImpossibleMove, board.move, 'a3', 'a5')
@@ -54,18 +54,16 @@ class TestBoard(unittest.TestCase):
         self.assertIsNone(board.squares['e1'])
         self.assertIsNone(board.squares['h1'])
 
-    def test_fail_castling_when_rook_moves(self):
+    def test_fail_castling_when_rook_already_moved(self):
         board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
         board.move('h1', 'h8')
         board.move('h8', 'h1')
-
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
-    def test_fail_castling_when_king_moves(self):
+    def test_fail_castling_when_king_already_moved(self):
         board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
         board.move('e1', 'f1')
         board.move('f1', 'e1')
-
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
     def test_fail_castling_when_no_rook_involved(self):
