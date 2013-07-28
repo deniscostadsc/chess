@@ -33,6 +33,8 @@ class TestBoard(unittest.TestCase):
         self.assertRaises(ImpossibleMove, board.move, 'g1', 'g3')
         self.assertRaises(ImpossibleMove, board.move, 'b2', 'b5')
 
+
+class TestBoardCapture(unittest.TestCase):
     def test_knight_capture(self):
         board = Board(initial_pieces={'e5': Pawn('black'), 'f3': Knight('white')})
         pieces = [piece for piece in board.squares.values() if piece is not None]
@@ -65,6 +67,8 @@ class TestBoard(unittest.TestCase):
         pieces = [piece for piece in board.squares.values() if piece is not None]
         self.assertEqual(31, len(pieces))
 
+
+class TestBoardExceptionMoves(unittest.TestCase):
     def test_pawn_moves_two_square(self):
         board = Board()
         pawn = board.squares['a2']
@@ -157,6 +161,8 @@ class TestBoard(unittest.TestCase):
         board = Board(initial_pieces={'e2': King('white'), 'h2': Rook('black')})
         self.assertRaises(ImpossibleMove, board.move, 'e2', 'g2')
 
+
+class TestBoardGame(unittest.TestCase):
     def test_alternating_between_players(self):
         board = Board()
         self.assertEqual('white', board.turn)
