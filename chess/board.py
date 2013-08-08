@@ -56,9 +56,6 @@ class Board(object):
     def turn(self):
         return self.__turn
 
-    def __switch_turn(self):
-        self.__turn = 'white' if self.turn == 'black' else 'black'
-
     def __is_castling(self, _from, to):
         y_from = _from[1]
         y_to = to[1]
@@ -107,6 +104,9 @@ class Board(object):
                 abs(y.index(to[1]) - y.index(_from[1])) == 2
             )
         return False
+
+    def __switch_turn(self):
+        self.__turn = 'white' if self.turn == 'black' else 'black'
 
     def move(self, _from, to):
         piece = self.squares[_from]
