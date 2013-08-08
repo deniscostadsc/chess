@@ -1,10 +1,9 @@
 from chess.pieces import Rook, Knight, Bishop, Queen, King, Pawn, ImpossibleMove
+from chess import x, y
 
 
 class Board(object):
     def __init__(self, initial_pieces=None):
-        self.__y = '12345678'
-        self.__x = 'abcdefgh'
         self.__turn = 'white'
         self.__squares = {}
         self.__initial_pieces = initial_pieces or {
@@ -43,19 +42,11 @@ class Board(object):
             'h7': Pawn('black'),
         }
 
-        for x in self.__x:
-            for y in self.__y:
-                self.__squares[x + y] = None
-                if x + y in self.__initial_pieces:
-                    self.__squares[x + y] = self.__initial_pieces[x + y]
-
-    @property
-    def x(self):
-        return self.__x
-
-    @property
-    def y(self):
-        return self.__y
+        for _x in x:
+            for _y in y:
+                self.__squares[_x + _y] = None
+                if _x + _y in self.__initial_pieces:
+                    self.__squares[_x + _y] = self.__initial_pieces[_x + _y]
 
     @property
     def squares(self):
@@ -74,7 +65,7 @@ class Board(object):
 
         x_rook = 'a'
         between = ['b', 'c', 'd']
-        if self.__x.index(_from[0]) - self.__x.index(to[0]) == -2:
+        if x.index(_from[0]) - x.index(to[0]) == -2:
             x_rook = 'h'
             between = ['f', 'g']
 
@@ -85,14 +76,14 @@ class Board(object):
             return False
         if y_from != y_to:
             return False
-        if self.__x.index(_from[0]) - self.__x.index(to[0]) not in [-2, 2]:
+        if x.index(_from[0]) - x.index(to[0]) not in [-2, 2]:
             return False
         if king.moved or rook.moved:
             return False
         if king.color != rook.color:
             return False
-        for x in between:
-            if self.squares[x + y_to] is not None:
+        for _x in between:
+            if self.squares[_x + y_to] is not None:
                 return False
 
         return True
@@ -102,7 +93,7 @@ class Board(object):
 
         x_rook = 'a'
         x_rook_to = 'd'
-        if self.__x.index(_from[0]) - self.__x.index(to[0]) == -2:
+        if x.index(_from[0]) - x.index(to[0]) == -2:
             x_rook = 'h'
             x_rook_to = 'f'
 
@@ -112,8 +103,8 @@ class Board(object):
     def is_valid_pawn_move(self, _from, to):
         if not self.squares[_from].moved:
             return (
-                self.x.index(_from[0]) == self.x.index(to[0]) and
-                abs(self.y.index(to[1]) - self.y.index(_from[1])) == 2
+                x.index(_from[0]) == x.index(to[0]) and
+                abs(y.index(to[1]) - y.index(_from[1])) == 2
             )
         return False
 

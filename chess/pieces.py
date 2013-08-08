@@ -1,3 +1,6 @@
+from chess import x, y
+
+
 class ImpossibleMove(Exception):
     pass
 
@@ -15,8 +18,6 @@ class Piece(object):
 
         self.__color = color
         self.__moved = False
-        self.__y = '12345678'
-        self.__x = 'abcdefgh'
 
     @property
     def name(self):
@@ -25,14 +26,6 @@ class Piece(object):
     @property
     def color(self):
         return self.__color
-
-    @property
-    def x(self):
-        return self.__x
-
-    @property
-    def y(self):
-        return self.__y
 
     @property
     def moved(self):
@@ -46,14 +39,14 @@ class Piece(object):
 class Bishop(Piece):
     def can_move(self, _from, to):
         self.moved = True
-        return abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1]))
+        return abs(x.index(_from[0]) - x.index(to[0])) == abs(y.index(to[1]) - y.index(_from[1]))
 
 
 class Rook(Piece):
     def can_move(self, _from, to):
         self.moved = True
-        horizontal = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
-        vertical = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
+        horizontal = x.index(_from[0]) == x.index(to[0]) and y.index(_from[1]) != y.index(to[1])
+        vertical = x.index(_from[0]) != x.index(to[0]) and y.index(_from[1]) == y.index(to[1])
 
         return bool(horizontal or vertical)
 
@@ -61,8 +54,8 @@ class Rook(Piece):
 class King(Piece):
     def can_move(self, _from, to):
         self.moved = True
-        x_distance = abs(self.x.index(_from[0]) - self.x.index(to[0]))
-        y_distance = abs(self.y.index(_from[1]) - self.y.index(to[1]))
+        x_distance = abs(x.index(_from[0]) - x.index(to[0]))
+        y_distance = abs(y.index(_from[1]) - y.index(to[1]))
 
         return bool(x_distance in [0, 1] and y_distance in [0, 1] and x_distance + y_distance != 0)
 
@@ -71,15 +64,15 @@ class Queen(Piece):
     def can_move(self, _from, to):
         self.moved = True
         # move as a Rook {{
-        horizontal = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
-        vertical = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
+        horizontal = x.index(_from[0]) == x.index(to[0]) and y.index(_from[1]) != y.index(to[1])
+        vertical = x.index(_from[0]) != x.index(to[0]) and y.index(_from[1]) == y.index(to[1])
 
         if horizontal or vertical:
             return True
         # }}
 
         # move as a Bishop {{
-        return abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1]))
+        return abs(x.index(_from[0]) - x.index(to[0])) == abs(y.index(to[1]) - y.index(_from[1]))
         # }}
 
 
@@ -87,21 +80,21 @@ class Pawn(Piece):
     def can_move(self, _from, to):
         self.moved = True
         if (
-            self.color == 'white' and self.x.index(_from[0]) == self.x.index(to[0]) and
-            self.y.index(to[1]) - self.y.index(_from[1]) == 1
+            self.color == 'white' and x.index(_from[0]) == x.index(to[0]) and
+            y.index(to[1]) - y.index(_from[1]) == 1
         ):
             return True
 
         return (
-            self.color == 'black' and self.x.index(_from[0]) == self.x.index(to[0]) and
-            self.y.index(to[1]) - self.y.index(_from[1]) == -1
+            self.color == 'black' and x.index(_from[0]) == x.index(to[0]) and
+            y.index(to[1]) - y.index(_from[1]) == -1
         )
 
 
 class Knight(Piece):
     def can_move(self, _from, to):
         self.moved = True
-        x_distance = abs(self.x.index(_from[0]) - self.x.index(to[0]))
-        y_distance = abs(self.y.index(_from[1]) - self.y.index(to[1]))
+        x_distance = abs(x.index(_from[0]) - x.index(to[0]))
+        y_distance = abs(y.index(_from[1]) - y.index(to[1]))
 
         return x_distance in [1, 2] and y_distance in [1, 2] and x_distance != y_distance
