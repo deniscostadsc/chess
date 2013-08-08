@@ -2,7 +2,7 @@ set -e
 
 cd $(dirname $0) && cd ..
 
-flake8 . --ignore=E501
+flake8 . --max-line-length=119
 
 coverage erase
 coverage run test/run_tests.py

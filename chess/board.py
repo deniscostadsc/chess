@@ -111,7 +111,10 @@ class Board(object):
 
     def is_valid_pawn_move(self, _from, to):
         if not self.squares[_from].moved:
-            return self.x.index(_from[0]) == self.x.index(to[0]) and abs(self.y.index(to[1]) - self.y.index(_from[1])) == 2
+            return (
+                self.x.index(_from[0]) == self.x.index(to[0]) and
+                abs(self.y.index(to[1]) - self.y.index(_from[1])) == 2
+            )
         return False
 
     def move(self, _from, to):
