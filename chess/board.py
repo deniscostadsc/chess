@@ -59,7 +59,7 @@ class Board(object):
     def __switch_turn(self):
         self.__turn = 'white' if self.turn == 'black' else 'black'
 
-    def is_castling(self, _from, to):
+    def __is_castling(self, _from, to):
         y_from = _from[1]
         y_to = to[1]
 
@@ -88,7 +88,7 @@ class Board(object):
 
         return True
 
-    def move_castling(self, _from, to):
+    def __move_castling(self, _from, to):
         y_to = to[1]
 
         x_rook = 'a'
@@ -100,7 +100,7 @@ class Board(object):
         self.squares[to], self.squares[x_rook_to + y_to] = self.squares[_from], self.squares[x_rook + y_to]
         self.squares[_from], self.squares[x_rook + y_to] = None, None
 
-    def is_valid_pawn_move(self, _from, to):
+    def __is_valid_pawn_move(self, _from, to):
         if not self.squares[_from].moved:
             return (
                 x.index(_from[0]) == x.index(to[0]) and
@@ -118,12 +118,12 @@ class Board(object):
             raise ImpossibleMove("You can't capture your ally!")
 
         if isinstance(piece, King):
-            if self.is_castling(_from, to):
-                self.move_castling(_from, to)
+            if self.__is_castling(_from, to):
+                self.__move_castling(_from, to)
                 return
 
         if isinstance(piece, Pawn):
-            if self.is_valid_pawn_move(_from, to):
+            if self.__is_valid_pawn_move(_from, to):
                 self.squares[to], self.squares[_from] = self.squares[_from], None
                 return
 
