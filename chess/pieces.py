@@ -46,9 +46,7 @@ class Piece(object):
 class Bishop(Piece):
     def can_move(self, _from, to):
         self.moved = True
-        if abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1])):
-            return True
-        return False
+        return abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1]))
 
 
 class Rook(Piece):
@@ -57,9 +55,7 @@ class Rook(Piece):
         horizontal = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
         vertical = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
 
-        if horizontal or vertical:
-            return True
-        return False
+        return bool(horizontal or vertical)
 
 
 class King(Piece):
@@ -68,9 +64,7 @@ class King(Piece):
         x_distance = abs(self.x.index(_from[0]) - self.x.index(to[0]))
         y_distance = abs(self.y.index(_from[1]) - self.y.index(to[1]))
 
-        if x_distance in [0, 1] and y_distance in [0, 1] and x_distance + y_distance != 0:
-            return True
-        return False
+        return bool(x_distance in [0, 1] and y_distance in [0, 1] and x_distance + y_distance != 0)
 
 
 class Queen(Piece):
@@ -85,11 +79,8 @@ class Queen(Piece):
         # }}
 
         # move as a Bishop {{
-        if abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1])):
-            return True
+        return abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1]))
         # }}
-
-        return False
 
 
 class Pawn(Piece):
@@ -100,12 +91,11 @@ class Pawn(Piece):
             self.y.index(to[1]) - self.y.index(_from[1]) == 1
         ):
             return True
-        if (
+
+        return (
             self.color == 'black' and self.x.index(_from[0]) == self.x.index(to[0]) and
             self.y.index(to[1]) - self.y.index(_from[1]) == -1
-        ):
-            return True
-        return False
+        )
 
 
 class Knight(Piece):
@@ -114,6 +104,4 @@ class Knight(Piece):
         x_distance = abs(self.x.index(_from[0]) - self.x.index(to[0]))
         y_distance = abs(self.y.index(_from[1]) - self.y.index(to[1]))
 
-        if x_distance in [1, 2] and y_distance in [1, 2] and x_distance != y_distance:
-            return True
-        return False
+        return x_distance in [1, 2] and y_distance in [1, 2] and x_distance != y_distance
