@@ -44,76 +44,76 @@ class Piece(object):
 
 
 class Bishop(Piece):
-    def move(self, _from, to):
+    def can_move(self, _from, to):
         self.moved = True
         if abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1])):
-            return to
-        raise ImpossibleMove("Bishop can't move to %s" % to)
+            return True
+        return False
 
 
 class Rook(Piece):
-    def move(self, _from, to):
+    def can_move(self, _from, to):
         self.moved = True
         horizontal = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
         vertical = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
 
         if horizontal or vertical:
-            return to
-        raise ImpossibleMove("Rook can't move to %s" % to)
+            return True
+        return False
 
 
 class King(Piece):
-    def move(self, _from, to):
+    def can_move(self, _from, to):
         self.moved = True
         x_distance = abs(self.x.index(_from[0]) - self.x.index(to[0]))
         y_distance = abs(self.y.index(_from[1]) - self.y.index(to[1]))
 
         if x_distance in [0, 1] and y_distance in [0, 1] and x_distance + y_distance != 0:
-            return to
-        raise ImpossibleMove("King can't move to %s" % to)
+            return True
+        return False
 
 
 class Queen(Piece):
-    def move(self, _from, to):
+    def can_move(self, _from, to):
         self.moved = True
         # move as a Rook {{
         horizontal = self.x.index(_from[0]) == self.x.index(to[0]) and self.y.index(_from[1]) != self.y.index(to[1])
         vertical = self.x.index(_from[0]) != self.x.index(to[0]) and self.y.index(_from[1]) == self.y.index(to[1])
 
         if horizontal or vertical:
-            return to
+            return True
         # }}
 
         # move as a Bishop {{
         if abs(self.x.index(_from[0]) - self.x.index(to[0])) == abs(self.y.index(to[1]) - self.y.index(_from[1])):
-            return to
+            return True
         # }}
 
-        raise ImpossibleMove("Queen can't move to %s" % to)
+        return False
 
 
 class Pawn(Piece):
-    def move(self, _from, to):
+    def can_move(self, _from, to):
         self.moved = True
         if (
             self.color == 'white' and self.x.index(_from[0]) == self.x.index(to[0]) and
             self.y.index(to[1]) - self.y.index(_from[1]) == 1
         ):
-            return to
+            return True
         if (
             self.color == 'black' and self.x.index(_from[0]) == self.x.index(to[0]) and
             self.y.index(to[1]) - self.y.index(_from[1]) == -1
         ):
-            return to
-        raise ImpossibleMove("Pawn can't move to %s" % to)
+            return True
+        return False
 
 
 class Knight(Piece):
-    def move(self, _from, to):
+    def can_move(self, _from, to):
         self.moved = True
         x_distance = abs(self.x.index(_from[0]) - self.x.index(to[0]))
         y_distance = abs(self.y.index(_from[1]) - self.y.index(to[1]))
 
         if x_distance in [1, 2] and y_distance in [1, 2] and x_distance != y_distance:
-            return to
-        raise ImpossibleMove("Knight can't move to %s" % to)
+            return True
+        return False

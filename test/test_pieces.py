@@ -3,10 +3,7 @@ try:
 except ImportError:
     import unittest
 
-from chess.pieces import (
-    Bishop, King, Knight, Pawn, Queen, Rook,
-    ImpossibleMove, InvalidChessColor
-)
+from chess.pieces import Bishop, King, Knight, Pawn, Queen, Rook, InvalidChessColor
 
 
 class TestInstantiationPieces(unittest.TestCase):
@@ -72,89 +69,89 @@ class TestColorPieces(unittest.TestCase):
 class TestBishopMoves(unittest.TestCase):
     def test_bishop_move(self):
         bishop = Bishop('white')
-        self.assertEqual('g2', bishop.move('f1', 'g2'))
-        self.assertEqual('a6', bishop.move('f1', 'a6'))
+        self.assertTrue(bishop.can_move('f1', 'g2'))
+        self.assertTrue(bishop.can_move('f1', 'a6'))
 
     def test_fail_bishop_move(self):
         bishop = Bishop('white')
-        self.assertRaises(ImpossibleMove, bishop.move, 'f1', 'f2')
-        self.assertRaises(ImpossibleMove, bishop.move, 'a1', 'a3')
+        self.assertFalse(bishop.can_move('f1', 'f2'))
+        self.assertFalse(bishop.can_move('a1', 'a3'))
 
 
 class TestRookMoves(unittest.TestCase):
     def test_rook_move(self):
         rook = Rook('white')
-        self.assertEqual('d8', rook.move('d5', 'd8'))
-        self.assertEqual('h2', rook.move('e2', 'h2'))
+        self.assertTrue(rook.can_move('d5', 'd8'))
+        self.assertTrue(rook.can_move('e2', 'h2'))
 
     def test_fail_rook_move(self):
         rook = Rook('white')
-        self.assertRaises(ImpossibleMove, rook.move, 'e5', 'd8')
-        self.assertRaises(ImpossibleMove, rook.move, 'a1', 'h8')
+        self.assertFalse(rook.can_move('e5', 'd8'))
+        self.assertFalse(rook.can_move('a1', 'h8'))
 
 
 class TestKingMoves(unittest.TestCase):
     def test_king_move(self):
         king = King('white')
-        self.assertEqual('e5', king.move('f5', 'e5'))
-        self.assertEqual('f5', king.move('e5', 'f5'))
+        self.assertTrue(king.can_move('f5', 'e5'))
+        self.assertTrue(king.can_move('e5', 'f5'))
 
     def test_fail_king_move(self):
         king = King('white')
-        self.assertRaises(ImpossibleMove, king.move, 'a1', 'h8')
-        self.assertRaises(ImpossibleMove, king.move, 'h1', 'a8')
+        self.assertFalse(king.can_move('a1', 'h8'))
+        self.assertFalse(king.can_move('h1', 'a8'))
 
 
 class TestQueenMoves(unittest.TestCase):
     def test_queen_move_as_rook(self):
         queen = Queen('white')
-        self.assertEqual('d8', queen.move('d5', 'd8'))
-        self.assertEqual('h2', queen.move('e2', 'h2'))
+        self.assertTrue(queen.can_move('d5', 'd8'))
+        self.assertTrue(queen.can_move('e2', 'h2'))
 
     def test_queen_move_as_bishop(self):
         queen = Queen('white')
-        self.assertEqual('g2', queen.move('f1', 'g2'))
-        self.assertEqual('a6', queen.move('f1', 'a6'))
+        self.assertTrue(queen.can_move('f1', 'g2'))
+        self.assertTrue(queen.can_move('f1', 'a6'))
 
     def test_fail_queen_move(self):
         queen = Queen('white')
-        self.assertRaises(ImpossibleMove, queen.move, 'a1', 'h7')
-        self.assertRaises(ImpossibleMove, queen.move, 'd4', 'f5')
+        self.assertFalse(queen.can_move('a1', 'h7'))
+        self.assertFalse(queen.can_move('d4', 'f5'))
 
 
 class TestPawnMoves(unittest.TestCase):
     def test_pawn_move(self):
         pawn = Pawn('white')
-        self.assertEqual('b5', pawn.move('b4', 'b5'))
-        self.assertEqual('e8', pawn.move('e7', 'e8'))
+        self.assertTrue(pawn.can_move('b4', 'b5'))
+        self.assertTrue(pawn.can_move('e7', 'e8'))
 
     def test_fail_pawn_move(self):
         pawn = Pawn('white')
-        self.assertRaises(ImpossibleMove, pawn.move, 'e2', 'e8')
+        self.assertFalse(pawn.can_move('e2', 'e8'))
 
     def test_fail_pawn_move_back(self):
         pawn = Pawn('white')
-        self.assertRaises(ImpossibleMove, pawn.move, 'b4', 'b3')
+        self.assertFalse(pawn.can_move('b4', 'b3'))
 
 
 class TestKnightMoves(unittest.TestCase):
     def test_knight_move(self):
         knight = Knight('white')
-        self.assertEqual('b5', knight.move('d4', 'b5'))
-        self.assertEqual('c6', knight.move('d4', 'c6'))
-        self.assertEqual('e6', knight.move('d4', 'e6'))
-        self.assertEqual('f5', knight.move('d4', 'f5'))
-        self.assertEqual('b3', knight.move('d4', 'b3'))
-        self.assertEqual('c2', knight.move('d4', 'c2'))
-        self.assertEqual('e2', knight.move('d4', 'e2'))
-        self.assertEqual('f3', knight.move('d4', 'f3'))
+        self.assertTrue(knight.can_move('d4', 'b5'))
+        self.assertTrue(knight.can_move('d4', 'c6'))
+        self.assertTrue(knight.can_move('d4', 'e6'))
+        self.assertTrue(knight.can_move('d4', 'f5'))
+        self.assertTrue(knight.can_move('d4', 'b3'))
+        self.assertTrue(knight.can_move('d4', 'c2'))
+        self.assertTrue(knight.can_move('d4', 'e2'))
+        self.assertTrue(knight.can_move('d4', 'f3'))
 
     def test_fail_knight_move(self):
         knight = Knight('white')
-        self.assertRaises(ImpossibleMove, knight.move, 'd4', 'd3')
-        self.assertRaises(ImpossibleMove, knight.move, 'd4', 'b2')
-        self.assertRaises(ImpossibleMove, knight.move, 'd4', 'd1')
-        self.assertRaises(ImpossibleMove, knight.move, 'd4', 'h8')
+        self.assertFalse(knight.can_move('d4', 'd3'))
+        self.assertFalse(knight.can_move('d4', 'b2'))
+        self.assertFalse(knight.can_move('d4', 'd1'))
+        self.assertFalse(knight.can_move('d4', 'h8'))
 
 
 class TestStrPieces(unittest.TestCase):

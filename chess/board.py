@@ -136,6 +136,7 @@ class Board(object):
                 self.squares[to], self.squares[_from] = self.squares[_from], None
                 return
 
-        self.squares[_from].move(_from, to)
+        if not self.squares[_from].can_move(_from, to):
+            raise ImpossibleMove("%s can't move to %s" % (self.squares[_from], to))
         self.squares[to], self.squares[_from] = self.squares[_from], None
         self.__switch_turn()
