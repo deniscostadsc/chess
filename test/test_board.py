@@ -36,16 +36,16 @@ class TestBoard(unittest.TestCase):
 
 class TestBoardCapture(unittest.TestCase):
     def test_knight_capture(self):
-        board = Board(initial_pieces={'e5': Pawn('black'), 'f3': Knight('white')})
+        board = Board(initial_pieces={'a8': King('black'), 'e5': Pawn('black'), 'f3': Knight('white')})
         pieces = [piece for piece in board.squares.values() if piece is not None]
-        self.assertEqual(2, len(pieces))
+        self.assertEqual(3, len(pieces))
 
         knight = board.squares['f3']
         board.move('f3', 'e5')
         self.assertIs(knight, board.squares['e5'])
 
         pieces = [piece for piece in board.squares.values() if piece is not None]
-        self.assertEqual(1, len(pieces))
+        self.assertEqual(2, len(pieces))
 
     def test_fail_knight_capture_ally(self):
         board = Board(initial_pieces={'e5': Pawn('white'), 'f3': Knight('white')})
@@ -122,7 +122,11 @@ class TestBoardExceptionMoves(unittest.TestCase):
         self.assertIsNone(board.squares['a8'])
 
     def test_fail_castling_when_rook_already_moved(self):
-        board = Board(initial_pieces={'a7': Pawn('black'), 'e1': King('white'), 'h1': Rook('white')})
+        board = Board(initial_pieces={
+            'a8': King('black'),
+            'a7': Pawn('black'),
+            'e1': King('white'),
+            'h1': Rook('white')})
         board.move('h1', 'h8')
         board.move('a7', 'a6')  # pawn moves
         board.move('h8', 'h1')
@@ -130,7 +134,11 @@ class TestBoardExceptionMoves(unittest.TestCase):
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
     def test_fail_castling_when_king_already_moved(self):
-        board = Board(initial_pieces={'a7': Pawn('black'), 'e1': King('white'), 'h1': Rook('white')})
+        board = Board(initial_pieces={
+            'a8': King('black'),
+            'a7': Pawn('black'),
+            'e1': King('white'),
+            'h1': Rook('white')})
         board.move('e1', 'f1')
         board.move('a7', 'a6')  # pawn moves
         board.move('f1', 'e1')
@@ -181,3 +189,9 @@ class TestBoardGame(unittest.TestCase):
         board = Board()
         self.assertEqual('white', board.turn)
         self.assertRaises(ImpossibleMove, board.move, 'b7', 'b6')  # black pawn try to move
+
+    def test_check_status(self):
+        board = Board({'e1': King('black'), 'f8': Rook('white')})
+        self.assertIsNone(board.check)
+        board.move('f8', 'e8')
+        self.assertEqual('black', board.check)

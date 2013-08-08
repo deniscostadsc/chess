@@ -4,6 +4,7 @@ from chess import x, y
 
 class Board(object):
     def __init__(self, initial_pieces=None):
+        self.__check = None
         self.__turn = 'white'
         self.__squares = {}
         self.__initial_pieces = initial_pieces or {
@@ -47,6 +48,14 @@ class Board(object):
                 self.__squares[_x + _y] = None
                 if _x + _y in self.__initial_pieces:
                     self.__squares[_x + _y] = self.__initial_pieces[_x + _y]
+
+    @property
+    def check(self):
+        return self.__check
+
+    @check.setter
+    def check(self, value):
+        self.__check = value
 
     @property
     def squares(self):
@@ -99,14 +108,27 @@ class Board(object):
 
     def __is_valid_pawn_move(self, _from, to):
         if not self.squares[_from].moved:
-            return (
-                x.index(_from[0]) == x.index(to[0]) and
-                abs(y.index(to[1]) - y.index(_from[1])) == 2
-            )
+            return (x.index(_from[0]) == x.index(to[0]) and
+                    abs(y.index(to[1]) - y.index(_from[1])) == 2)
         return False
 
     def __switch_turn(self):
         self.__turn = 'white' if self.turn == 'black' else 'black'
+
+    def __is_my_opponent_king_in_check(self, color):
+        other_color = 'black' if color == 'white' else 'white'
+
+        for position in self.squares:
+            if isinstance(self.squares[position], King) and self.squares[position].color == other_color:
+                king_position = position
+                break
+
+        for position in self.squares:
+            if (self.squares[position] and
+                    self.squares[position].color == color and
+                    self.squares[position].can_move(position, king_position)):
+                return True
+        return False
 
     def move(self, _from, to):
         piece = self.squares[_from]
@@ -129,5 +151,11 @@ class Board(object):
 
         if not self.squares[_from].can_move(_from, to):
             raise ImpossibleMove("%s can't move to %s" % (self.squares[_from].name, to))
+
         self.squares[to], self.squares[_from] = self.squares[_from], None
+
+        if self.__is_my_opponent_king_in_check(self.turn):
+            self.__switch_turn()
+            self.check = self.turn
+            return
         self.__switch_turn()
