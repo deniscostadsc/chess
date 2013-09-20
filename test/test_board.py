@@ -102,9 +102,10 @@ class TestBoardExceptionMoves(unittest.TestCase):
         self.assertIsNone(board.squares['a1'])
 
     def test_castling_right_black(self):
-        board = Board(initial_pieces={'e8': King('white'), 'h8': Rook('white')})
+        board = Board(initial_pieces={'a2': Pawn('white'), 'e8': King('black'), 'h8': Rook('black')})
         king = board.squares['e8']
         rook = board.squares['h8']
+        board.move('a2', 'a3')  # just because white have to move first
         board.move('e8', 'g8')
         self.assertIs(king, board.squares['g8'])
         self.assertIs(rook, board.squares['f8'])
@@ -112,9 +113,10 @@ class TestBoardExceptionMoves(unittest.TestCase):
         self.assertIsNone(board.squares['h8'])
 
     def test_castling_left_black(self):
-        board = Board(initial_pieces={'e8': King('white'), 'a8': Rook('white')})
+        board = Board(initial_pieces={'a2': Pawn('white'), 'e8': King('black'), 'a8': Rook('black')})
         king = board.squares['e8']
         rook = board.squares['a8']
+        board.move('a2', 'a3')  # just because white have to move first
         board.move('e8', 'c8')
         self.assertIs(king, board.squares['c8'])
         self.assertIs(rook, board.squares['d8'])
