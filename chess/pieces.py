@@ -1,10 +1,6 @@
 from chess import x, y
 
 
-class ImpossibleMove(Exception):
-    pass
-
-
 class InvalidChessColor(Exception):
     pass
 

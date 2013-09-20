@@ -1,5 +1,9 @@
-from chess.pieces import Rook, Knight, Bishop, Queen, King, Pawn, ImpossibleMove
+from chess.pieces import Rook, Knight, Bishop, Queen, King, Pawn
 from chess import x, y
+
+
+class ImpossibleMove(Exception):
+    pass
 
 
 class Board(object):

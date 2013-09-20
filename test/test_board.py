@@ -3,8 +3,8 @@ try:
 except ImportError:
     import unittest
 
-from chess.board import Board
-from chess.pieces import King, Rook, Queen, ImpossibleMove, Pawn, Knight
+from chess.board import Board, ImpossibleMove
+from chess.pieces import King, Rook, Queen, Pawn, Knight
 
 
 class TestBoard(unittest.TestCase):
