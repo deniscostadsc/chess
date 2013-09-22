@@ -8,7 +8,7 @@ class ImpossibleMove(Exception):
 
 class Board(object):
     def __init__(self, initial_pieces=None):
-        self.__check = None
+        self.check = None
         self.__turn = 'white'
         self.__squares = {}
         self.__initial_pieces = initial_pieces or {
@@ -52,14 +52,6 @@ class Board(object):
                 self.__squares[_x + _y] = None
                 if _x + _y in self.__initial_pieces:
                     self.__squares[_x + _y] = self.__initial_pieces[_x + _y]
-
-    @property
-    def check(self):
-        return self.__check
-
-    @check.setter
-    def check(self, value):
-        self.__check = value
 
     @property
     def squares(self):
