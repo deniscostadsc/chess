@@ -29,7 +29,8 @@ class Piece(object):
 
     @moved.setter
     def moved(self, value):
-        self.__moved = value
+        if not self.__moved and value is True:
+            self.__moved = value
 
 
 class Bishop(Piece):
