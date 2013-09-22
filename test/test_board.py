@@ -129,9 +129,9 @@ class TestBoardExceptionMoves(unittest.TestCase):
             'a7': Pawn('black'),
             'e1': King('white'),
             'h1': Rook('white')})
-        board.move('h1', 'h8')
+        board.move('h1', 'h7')
         board.move('a7', 'a6')  # pawn moves
-        board.move('h8', 'h1')
+        board.move('h7', 'h1')
         board.move('a6', 'a5')  # pawn moves
         self.assertRaises(ImpossibleMove, board.move, 'e1', 'g1')
 
@@ -192,8 +192,23 @@ class TestBoardGame(unittest.TestCase):
         self.assertEqual('white', board.turn)
         self.assertRaises(ImpossibleMove, board.move, 'b7', 'b6')  # black pawn try to move
 
-    def test_check_status(self):
+    def test_check_player_put_the_other_in_check(self):
         board = Board({'e1': King('black'), 'f8': Rook('white')})
         self.assertIsNone(board.check)
         board.move('f8', 'e8')
         self.assertEqual('black', board.check)
+
+    def test_check_if_player_is_not_in_check_anymore(self):
+        board = Board({'e1': King('black'), 'f8': Rook('white'), 'a1': King('white')})
+        self.assertIsNone(board.check)
+        board.move('f8', 'e8')
+        self.assertEqual('black', board.check)
+        board.move('e1', 'f1')
+        self.assertIsNone(board.check)
+
+    def test_raise_exception_when_player_doesnt_get_out_of_check(self):
+        board = Board({'e1': King('black'), 'f8': Rook('white'), 'a1': King('white')})
+        self.assertIsNone(board.check)
+        board.move('f8', 'e8')
+        self.assertEqual('black', board.check)
+        self.assertRaises(ImpossibleMove, board.move, 'e1', 'e2')

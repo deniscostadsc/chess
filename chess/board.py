@@ -119,18 +119,19 @@ class Board(object):
     def __switch_turn(self):
         self.__turn = 'white' if self.turn == 'black' else 'black'
 
-    def __is_my_opponent_king_in_check(self, color):
+    def __is_player_in_check(self, color, squares=None):
         other_color = 'black' if color == 'white' else 'white'
+        squares = squares or self.squares
 
-        for position in self.squares:
-            if isinstance(self.squares[position], King) and self.squares[position].color == other_color:
+        for position in squares:
+            if isinstance(squares[position], King) and squares[position].color == color:
                 king_position = position
                 break
 
-        for position in self.squares:
-            if (self.squares[position] and
-                    self.squares[position].color == color and
-                    self.squares[position].can_move(position, king_position)):
+        for position in squares:
+            if (squares[position] and
+                    squares[position].color == other_color and
+                    squares[position].can_move(position, king_position)):
                 return True
         return False
 
@@ -156,9 +157,21 @@ class Board(object):
         if not self.squares[_from].can_move(_from, to):
             raise ImpossibleMove("%s can't move to %s" % (self.squares[_from].name, to))
 
+        # check if player is getting out of check
+        if self.check:
+            # simulating movement
+            _squares = dict(self.squares)
+            _squares[to], _squares[_from] = _squares[_from], None
+
+            if self.__is_player_in_check(self.check, squares=_squares):
+                raise ImpossibleMove('You should get out of check!')
+            else:
+                self.check = None
+
         self.squares[to], self.squares[_from] = self.squares[_from], None
 
-        if self.__is_my_opponent_king_in_check(self.turn):
+        # check if player is putting opponent in check
+        if self.__is_player_in_check('white' if self.turn == 'black' else 'black'):
             self.__switch_turn()
             self.check = self.turn
             return
