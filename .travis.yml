@@ -12,5 +12,3 @@ script:
 notifications:
     email:
         - deniscostadsc@gmail.com
-after_success:
-    - coveralls
