@@ -102,6 +102,9 @@ class Board(object):
         self.squares[to], self.squares[x_rook_to + y_to] = self.squares[_from], self.squares[x_rook + y_to]
         self.squares[_from], self.squares[x_rook + y_to] = None, None
 
+        self.squares[to].moved = True
+        self.squares[x_rook_to + y_to].moved = True
+
     def __is_valid_pawn_move(self, _from, to):
         if not self.squares[_from].moved:
             return (x.index(_from[0]) == x.index(to[0]) and
@@ -144,10 +147,13 @@ class Board(object):
         if isinstance(piece, Pawn):
             if self.__is_valid_pawn_move(_from, to):
                 self.squares[to], self.squares[_from] = self.squares[_from], None
+                piece.moved = True
                 return
 
         if not self.squares[_from].can_move(_from, to):
             raise ImpossibleMove("%s can't move to %s" % (self.squares[_from].name, to))
+
+        piece.moved = True
 
         # check if player is getting out of check
         if self.check:

@@ -35,13 +35,11 @@ class Piece(object):
 
 class Bishop(Piece):
     def can_move(self, _from, to):
-        self.moved = True
         return abs(x.index(_from[0]) - x.index(to[0])) == abs(y.index(to[1]) - y.index(_from[1]))
 
 
 class Rook(Piece):
     def can_move(self, _from, to):
-        self.moved = True
         horizontal = x.index(_from[0]) == x.index(to[0]) and y.index(_from[1]) != y.index(to[1])
         vertical = x.index(_from[0]) != x.index(to[0]) and y.index(_from[1]) == y.index(to[1])
 
@@ -50,7 +48,6 @@ class Rook(Piece):
 
 class King(Piece):
     def can_move(self, _from, to):
-        self.moved = True
         x_distance = abs(x.index(_from[0]) - x.index(to[0]))
         y_distance = abs(y.index(_from[1]) - y.index(to[1]))
 
@@ -59,7 +56,6 @@ class King(Piece):
 
 class Queen(Piece):
     def can_move(self, _from, to):
-        self.moved = True
         # move as a Rook {{
         horizontal = x.index(_from[0]) == x.index(to[0]) and y.index(_from[1]) != y.index(to[1])
         vertical = x.index(_from[0]) != x.index(to[0]) and y.index(_from[1]) == y.index(to[1])
@@ -75,7 +71,6 @@ class Queen(Piece):
 
 class Pawn(Piece):
     def can_move(self, _from, to):
-        self.moved = True
         if (self.color == 'white' and x.index(_from[0]) == x.index(to[0]) and
                 y.index(to[1]) - y.index(_from[1]) == 1):
             return True
@@ -86,7 +81,6 @@ class Pawn(Piece):
 
 class Knight(Piece):
     def can_move(self, _from, to):
-        self.moved = True
         x_distance = abs(x.index(_from[0]) - x.index(to[0]))
         y_distance = abs(y.index(_from[1]) - y.index(to[1]))
 
