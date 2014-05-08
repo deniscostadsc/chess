@@ -8,8 +8,8 @@ def test_rook_can_moves():
     rook = Rook('white')
     board = Board(initial_pieces={'d5': rook})
     board.move('d5', 'd8')
-    assert board.squares['d8'] is rook
-    assert board.squares['d5'] is None
+    assert board.get_piece('d8') is rook
+    assert board.get_piece('d5') is None
 
 
 def test_rook_cant_moves():

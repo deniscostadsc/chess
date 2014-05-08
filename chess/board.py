@@ -54,16 +54,18 @@ class Board(object):
                     self.__squares[_x + _y] = self.__initial_pieces[_x + _y]
 
     @property
-    def squares(self):
-        return self.__squares
-
-    @property
     def turn(self):
         return self.__turn
 
+    def get_piece(self, position):
+        return self.__squares[position]
+
+    def pieces_quantity(self):
+        return len([piece for piece in self.__squares.values() if piece is not None])
+
     def is_tutorial_mode(self):
         # TODO: I have to improve this method!
-        for piece in self.squares.values():
+        for piece in self.__squares.values():
             if isinstance(piece, King):
                 return False
         return True
@@ -78,8 +80,8 @@ class Board(object):
             x_rook = 'h'
             between = ['f', 'g']
 
-        king = self.squares[_from]
-        rook = self.squares[x_rook + y_to]
+        king = self.get_piece(_from)
+        rook = self.get_piece(x_rook + y_to)
 
         if not isinstance(rook, Rook):
             return False
@@ -92,7 +94,7 @@ class Board(object):
         if king.color != rook.color:
             return False
         for _x in between:
-            if self.squares[_x + y_to] is not None:
+            if self.get_piece(_x + y_to) is not None:
                 return False
 
         return True
@@ -106,14 +108,14 @@ class Board(object):
             x_rook = 'h'
             x_rook_to = 'f'
 
-        self.squares[to], self.squares[x_rook_to + y_to] = self.squares[_from], self.squares[x_rook + y_to]
-        self.squares[_from], self.squares[x_rook + y_to] = None, None
+        self.__squares[to], self.__squares[x_rook_to + y_to] = self.get_piece(_from), self.get_piece(x_rook + y_to)
+        self.__squares[_from], self.__squares[x_rook + y_to] = None, None
 
-        self.squares[to].moved = True
-        self.squares[x_rook_to + y_to].moved = True
+        self.get_piece(to).moved = True
+        self.get_piece(x_rook_to + y_to).moved = True
 
     def __is_valid_pawn_move(self, _from, to):
-        if not self.squares[_from].moved:
+        if not self.get_piece(_from).moved:
             return (x.index(_from[0]) == x.index(to[0]) and
                     abs(y.index(to[1]) - y.index(_from[1])) == 2)
         return False
@@ -124,7 +126,7 @@ class Board(object):
     def __is_player_in_check(self, color, squares=None):
 
         other_color = 'black' if color == 'white' else 'white'
-        squares = squares or self.squares
+        squares = squares or self.__squares
 
         for position in squares:
             if isinstance(squares[position], King) and squares[position].color == color:
@@ -139,8 +141,8 @@ class Board(object):
         return False
 
     def move(self, _from, to):
-        piece = self.squares[_from]
-        destiny = self.squares[to]
+        piece = self.get_piece(_from)
+        destiny = self.get_piece(to)
 
         if piece.color != self.turn:
             raise ImpossibleMove("Not your turn!")
@@ -154,19 +156,19 @@ class Board(object):
 
         if isinstance(piece, Pawn):
             if self.__is_valid_pawn_move(_from, to):
-                self.squares[to], self.squares[_from] = self.squares[_from], None
+                self.__squares[to], self.__squares[_from] = self.get_piece(_from), None
                 piece.moved = True
                 return
 
-        if not self.squares[_from].can_move(_from, to):
-            raise ImpossibleMove("%s can't move to %s" % (self.squares[_from].name, to))
+        if not self.get_piece(_from).can_move(_from, to):
+            raise ImpossibleMove("%s can't move to %s" % (self.get_piece(_from).name, to))
 
         piece.moved = True
 
         # check if player is getting out of check
         if self.check:
             # simulating movement
-            _squares = dict(self.squares)
+            _squares = dict(self.__squares)
             _squares[to], _squares[_from] = _squares[_from], None
 
             if not self.is_tutorial_mode() and self.__is_player_in_check(self.check, squares=_squares):
@@ -174,7 +176,7 @@ class Board(object):
             else:
                 self.check = None
 
-        self.squares[to], self.squares[_from] = self.squares[_from], None
+        self.__squares[to], self.__squares[_from] = self.get_piece(_from), None
 
         # check if player is putting opponent in check
         if not self.is_tutorial_mode() and self.__is_player_in_check('white' if self.turn == 'black' else 'black'):

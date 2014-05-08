@@ -8,8 +8,8 @@ def test_bishop_can_moves():
     bishop = Bishop('White')
     board = Board(initial_pieces={'f1': bishop})
     board.move('f1', 'h3')
-    assert board.squares['h3'] is bishop
-    assert board.squares['f1'] is None
+    assert board.get_piece('h3') is bishop
+    assert board.get_piece('f1') is None
 
 
 def test_bishop_cant_moves():

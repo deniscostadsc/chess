@@ -13,8 +13,8 @@ def test_king_can_moves():
     #
     board = Board(initial_pieces={'f5': king, 'h1': King('black')})
     board.move('f5', 'e5')
-    assert board.squares['e5'] is king
-    assert board.squares['f5'] is None
+    assert board.get_piece('e5') is king
+    assert board.get_piece('f5') is None
 
 
 def test_king_cant_moves():
@@ -25,24 +25,24 @@ def test_king_cant_moves():
 
 def test_king_can_do_castling_to_right():
     board = Board(initial_pieces={'e1': King('white'), 'h1': Rook('white')})
-    king = board.squares['e1']
-    rook = board.squares['h1']
+    king = board.get_piece('e1')
+    rook = board.get_piece('h1')
     board.move('e1', 'g1')
-    assert board.squares['g1'] == king
-    assert board.squares['f1'] == rook
-    assert board.squares['e1'] is None
-    assert board.squares['h1'] is None
+    assert board.get_piece('g1') == king
+    assert board.get_piece('f1') == rook
+    assert board.get_piece('e1') is None
+    assert board.get_piece('h1') is None
 
 
 def test_king_can_do_castling_to_left():
     board = Board(initial_pieces={'e1': King('white'), 'a1': Rook('white')})
-    king = board.squares['e1']
-    rook = board.squares['a1']
+    king = board.get_piece('e1')
+    rook = board.get_piece('a1')
     board.move('e1', 'c1')
-    assert board.squares['c1'] == king
-    assert board.squares['d1'] == rook
-    assert board.squares['e1'] is None
-    assert board.squares['a1'] is None
+    assert board.get_piece('c1') == king
+    assert board.get_piece('d1') == rook
+    assert board.get_piece('e1') is None
+    assert board.get_piece('a1') is None
 
 
 def test_king_cant_do_castling_when_rook_already_moved():

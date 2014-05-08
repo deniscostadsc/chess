@@ -6,18 +6,18 @@ from chess.pieces import Pawn
 
 def test_pawn_can_moves():
     board = Board()
-    pawn = board.squares['e2']
+    pawn = board.get_piece('e2')
     board.move('e2', 'e3')
-    assert pawn is board.squares['e3']
-    assert board.squares['e2'] is None
+    assert board.get_piece('e3') is pawn
+    assert board.get_piece('e2') is None
 
 
 def test_pawn_can_moves_two_squares():
     board = Board()
-    pawn = board.squares['e2']
+    pawn = board.get_piece('e2')
     board.move('e2', 'e4')
-    assert pawn is board.squares['e4']
-    assert board.squares['e2'] is None
+    assert board.get_piece('e4') is pawn
+    assert board.get_piece('e2') is None
 
 
 def test_pawn_cant_moves_two_squares_after_moved():

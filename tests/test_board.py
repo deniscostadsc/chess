@@ -4,22 +4,14 @@ from chess.board import Board, ImpossibleMove
 from chess.pieces import King, Rook, Pawn, Knight
 
 
-def test_board_has_64_squares():
-    board = Board()
-    assert len(board.squares) == 64
-
-
 def test_board_has_32_pieces():
     board = Board()
-    pieces = [piece for piece in board.squares.values() if piece is not None]
-    assert len(pieces) == 32
+    assert board.pieces_quantity() == 32
 
 
 def test_board_can_be_instatiated_with_any_set_of_pieces():
     board = Board(initial_pieces={'a2': Pawn('white'), 'a6': Pawn('black')})
-    pieces = [piece for piece in board.squares.values() if piece is not None]
-    assert len(pieces) == 2
-    assert len(board.squares) == 64
+    assert board.pieces_quantity() == 2
 
 
 def test_piece_cant_capture_an_ally():
@@ -73,12 +65,9 @@ def test_player_should_to_get_out_of_check():
 
 def test_pieces_can_capture_opponent_pieces():
     board = Board(initial_pieces={'a8': King('black'), 'e5': Pawn('black'), 'f3': Knight('white')})
-    pieces = [p for p in board.squares.values() if p is not None]
-    assert len(pieces) == 3
+    assert board.pieces_quantity() == 3
 
-    knight = board.squares['f3']
+    knight = board.get_piece('f3')
     board.move('f3', 'e5')
-    assert board.squares['e5'] is knight
-
-    pieces = [p for p in board.squares.values() if p is not None]
-    assert len(pieces) == 2
+    assert board.get_piece('e5') is knight
+    assert board.pieces_quantity() == 2
