@@ -6,4 +6,4 @@ cd $(dirname $0) && cd ..
 
 flake8 . --max-line-length=119
 
-nosetests --with-coverage --cover-erase --cover-min-percentage=80
+py.test --cov chess tests/ --cov-report term-missing

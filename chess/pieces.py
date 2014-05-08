@@ -17,7 +17,7 @@ class Piece(object):
 
     @property
     def name(self):
-        return self.__class__.__name__
+        return '%s %s' % (self.color.capitalize(), self.__class__.__name__)
 
     @property
     def color(self):

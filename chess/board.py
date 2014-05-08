@@ -61,6 +61,13 @@ class Board(object):
     def turn(self):
         return self.__turn
 
+    def is_tutorial_mode(self):
+        # TODO: I have to improve this method!
+        for piece in self.squares.values():
+            if isinstance(piece, King):
+                return False
+        return True
+
     def __is_castling(self, _from, to):
         y_from = _from[1]
         y_to = to[1]
@@ -115,6 +122,7 @@ class Board(object):
         self.__turn = 'white' if self.turn == 'black' else 'black'
 
     def __is_player_in_check(self, color, squares=None):
+
         other_color = 'black' if color == 'white' else 'white'
         squares = squares or self.squares
 
@@ -161,7 +169,7 @@ class Board(object):
             _squares = dict(self.squares)
             _squares[to], _squares[_from] = _squares[_from], None
 
-            if self.__is_player_in_check(self.check, squares=_squares):
+            if not self.is_tutorial_mode() and self.__is_player_in_check(self.check, squares=_squares):
                 raise ImpossibleMove('You should get out of check!')
             else:
                 self.check = None
@@ -169,7 +177,7 @@ class Board(object):
         self.squares[to], self.squares[_from] = self.squares[_from], None
 
         # check if player is putting opponent in check
-        if self.__is_player_in_check('white' if self.turn == 'black' else 'black'):
+        if not self.is_tutorial_mode() and self.__is_player_in_check('white' if self.turn == 'black' else 'black'):
             self.__switch_turn()
             self.check = self.turn
             return
