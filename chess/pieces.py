@@ -71,12 +71,16 @@ class Queen(Piece):
 
 class Pawn(Piece):
     def can_move(self, _from, to):
-        if (self.color == 'white' and x.index(_from[0]) == x.index(to[0]) and
-                y.index(to[1]) - y.index(_from[1]) == 1):
-            return True
+        if self.color == 'white' and x.index(_from[0]) == x.index(to[0]):
+            ordinary_move = y.index(to[1]) - y.index(_from[1]) == 1
+            two_square_move = not self.moved and y.index(to[1]) - y.index(_from[1]) == 2
+            return ordinary_move or two_square_move
 
-        return (self.color == 'black' and x.index(_from[0]) == x.index(to[0]) and
-                y.index(to[1]) - y.index(_from[1]) == -1)
+        if self.color == 'black' and x.index(_from[0]) == x.index(to[0]):
+            ordinary_move = y.index(to[1]) - y.index(_from[1]) == -1
+            two_square_move = not self.moved and y.index(to[1]) - y.index(_from[1]) == -2
+            return ordinary_move or two_square_move
+        return False
 
 
 class Knight(Piece):

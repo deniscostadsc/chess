@@ -114,12 +114,6 @@ class Board(object):
         self.get_piece(to).moved = True
         self.get_piece(x_rook_to + y_to).moved = True
 
-    def __is_valid_pawn_move(self, _from, to):
-        if not self.get_piece(_from).moved:
-            return (x.index(_from[0]) == x.index(to[0]) and
-                    abs(y.index(to[1]) - y.index(_from[1])) == 2)
-        return False
-
     def __switch_turn(self):
         self.__turn = 'white' if self.turn == 'black' else 'black'
 
@@ -152,12 +146,6 @@ class Board(object):
         if isinstance(piece, King):
             if self.__is_castling(_from, to):
                 self.__move_castling(_from, to)
-                return
-
-        if isinstance(piece, Pawn):
-            if self.__is_valid_pawn_move(_from, to):
-                self.__squares[to], self.__squares[_from] = self.get_piece(_from), None
-                piece.moved = True
                 return
 
         if not self.get_piece(_from).can_move(_from, to):
