@@ -70,49 +70,50 @@ class Board(object):
                 return False
         return True
 
-    def __is_castling(self, _from, to):
-        y_from = _from[1]
-        y_to = to[1]
+    def __is_castling(self, source, destination):
+        y_source = source[1]
+        y_destination = destination[1]
 
         x_rook = 'a'
         between = ['b', 'c', 'd']
-        if x.index(_from[0]) - x.index(to[0]) == -2:
+        if x.index(source[0]) - x.index(destination[0]) == -2:
             x_rook = 'h'
             between = ['f', 'g']
 
-        king = self.get_piece(_from)
-        rook = self.get_piece(x_rook + y_to)
+        king = self.get_piece(source)
+        rook = self.get_piece(x_rook + y_destination)
 
         if not isinstance(rook, Rook):
             return False
-        if y_from != y_to:
+        if y_source != y_destination:
             return False
-        if x.index(_from[0]) - x.index(to[0]) not in [-2, 2]:
+        if x.index(source[0]) - x.index(destination[0]) not in [-2, 2]:
             return False
         if king.moved or rook.moved:
             return False
         if king.color != rook.color:
             return False
         for _x in between:
-            if self.get_piece(_x + y_to) is not None:
+            if self.get_piece(_x + y_destination) is not None:
                 return False
 
         return True
 
-    def __move_castling(self, _from, to):
-        y_to = to[1]
+    def __move_castling(self, source, destination):
+        y_destination = destination[1]
 
         x_rook = 'a'
         x_rook_to = 'd'
-        if x.index(_from[0]) - x.index(to[0]) == -2:
+        if x.index(source[0]) - x.index(destination[0]) == -2:
             x_rook = 'h'
             x_rook_to = 'f'
 
-        self.__squares[to], self.__squares[x_rook_to + y_to] = self.get_piece(_from), self.get_piece(x_rook + y_to)
-        self.__squares[_from], self.__squares[x_rook + y_to] = None, None
+        self.__squares[destination], self.__squares[x_rook_to + y_destination] = \
+            self.get_piece(source), self.get_piece(x_rook + y_destination)
+        self.__squares[source], self.__squares[x_rook + y_destination] = None, None
 
-        self.get_piece(to).moved = True
-        self.get_piece(x_rook_to + y_to).moved = True
+        self.get_piece(destination).moved = True
+        self.get_piece(x_rook_to + y_destination).moved = True
 
     def __switch_turn(self):
         self.__turn = 'white' if self.turn == 'black' else 'black'
@@ -134,9 +135,9 @@ class Board(object):
                 return True
         return False
 
-    def move(self, _from, to):
-        piece = self.get_piece(_from)
-        destiny = self.get_piece(to)
+    def move(self, source, destination):
+        piece = self.get_piece(source)
+        destiny = self.get_piece(destination)
 
         if piece.color != self.turn:
             raise ImpossibleMove("Not your turn!")
@@ -144,12 +145,12 @@ class Board(object):
             raise ImpossibleMove("You can't capture your ally!")
 
         if isinstance(piece, King):
-            if self.__is_castling(_from, to):
-                self.__move_castling(_from, to)
+            if self.__is_castling(source, destination):
+                self.__move_castling(source, destination)
                 return
 
-        if not self.get_piece(_from).can_move(_from, to):
-            raise ImpossibleMove("%s can't move to %s" % (self.get_piece(_from).name, to))
+        if not self.get_piece(source).can_move(source, destination):
+            raise ImpossibleMove("%s can't move to %s" % (self.get_piece(source).name, destination))
 
         piece.moved = True
 
@@ -157,14 +158,14 @@ class Board(object):
         if self.check:
             # simulating movement
             _squares = dict(self.__squares)
-            _squares[to], _squares[_from] = _squares[_from], None
+            _squares[destination], _squares[source] = _squares[source], None
 
             if not self.is_tutorial_mode() and self.__is_player_in_check(self.check, squares=_squares):
                 raise ImpossibleMove('You should get out of check!')
             else:
                 self.check = None
 
-        self.__squares[to], self.__squares[_from] = self.get_piece(_from), None
+        self.__squares[destination], self.__squares[source] = self.get_piece(source), None
 
         # check if player is putting opponent in check
         if not self.is_tutorial_mode() and self.__is_player_in_check('white' if self.turn == 'black' else 'black'):
